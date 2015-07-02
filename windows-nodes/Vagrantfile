@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+
+  config.vm.define "win7" do |win7|
+
+    win7.vm.box = "win7-ie8"
+    win7.vm.guest = :windows
+    
+    win7.vm.communicator = "winrm"
+
+    win7.winrm.username = "IEUser"
+    win7.winrm.password = "Passw0rd!"
+
+    win7.vm.network :forwarded_port, guest: 5985, host: 5987, id: "winrm", auto_correct: true
+
+    win7.windows.set_work_network = true
+    
+    win7.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.name = "ie8-selenium-node"
+      vb.cpus = 2
+      vb.memory = 4096
+    end
+
+    win7.vm.provision :shell, path: "scripts/say-hi.cmd"
+
+  end
+
+end
+
+#    win7.winrm.host = "localhost"
+#    win7.vm.network "public_network"

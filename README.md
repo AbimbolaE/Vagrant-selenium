@@ -1,4 +1,5 @@
-#Vagrant-Selenium
+Vagrant-Selenium
+==============
 *Last edited on **3rd, July 2015** by **Abimbola Esuruoso***
 
 This is a project for attaching selenium nodes from a guest OS (*which is managed by Vagrant*) to a selenium hub on a host machine.
@@ -7,8 +8,8 @@ Follow the tutorial below to create and install a windows base box on your syste
 
 After that, simply run `vagrant up` to start the vm and connect the node to selenium grid on your local machine (Obviously, you should start selenium grid as a hub for that to work!).
 
-##How To Create A Windows Base Box for Vagrant
-
+How To Create A Windows Base Box for Vagrant
+-----------------------------------------------------------------
 
 This guide was made following instructions on the Vagrant website and two other tutorials:
 

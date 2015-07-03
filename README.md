@@ -1,6 +1,6 @@
 Vagrant-Selenium
 ==============
-*Last edited on **3rd, July 2015** by **Abimbola Esuruoso***
+_Last edited on **3rd, July 2015** by **Abimbola Esuruoso**_
 
 This is a project for attaching selenium nodes from a guest OS (*which is managed by Vagrant*) to a selenium hub on a host machine.
 
@@ -11,17 +11,17 @@ After that, simply run `vagrant up` to start the vm and connect the node to sele
 How To Create A Windows Base Box for Vagrant
 -----------------------------------------------------------------
 
-This guide was made following instructions on the Vagrant website and two other tutorials:
+This guide was made following instructions on the [Vagrant website](https://docs.vagrantup.com/v2/) and two other tutorials:
 
-	Vagrant Website: https://docs.vagrantup.com/v2/
-	Windows Base Box Configuration Tutorial : https://gist.github.com/uchagani/48d25871e7f306f1f8af
-	Windows Box Provisioning Tutorial: http://kwilson.me.uk/blog/provisioning-a-windows-server-vagrant-box-with-iis-net-4-5-and-octopus-deploy/
+- Windows Base Box Configuration Tutorial : https://gist.github.com/uchagani/48d25871e7f306f1f8af
+- Windows Box Provisioning Tutorial: http://kwilson.me.uk/blog/provisioning-a-windows-server-vagrant-box-with-iis-net-4-5-and-octopus-deploy/
 
- **Note**: You need to download Vagrant from the Vagrant website (http://www.vagrantup.com/downloads.html) ..The PPA distribution has some known issues
+ **Note**: You need to download Vagrant from the Vagrant website (http://www.vagrantup.com/downloads.html) ... the PPA distribution has some known issues
 
  **Note**: The modern ie images do not have ssh or winrm configured by default. You will need to enable and configure winrm via the Virtualbox
 	gui as explained in Step 3.
 
+### Instructions
 1. Download the windows image from the [Modern IE website](http://dev.modern.ie/tools/vms/)
 
 2. Add the image to Virtual box and give it a name:
@@ -30,12 +30,11 @@ This guide was made following instructions on the Vagrant website and two other 
 
 3. Start the VM, follow **ALL** the instructions at [this tutorial](https://gist.github.com/uchagani/48d25871e7f306f1f8af) for the required setup steps for a windows box
 
-	**Note**: Powershell scripting is disabled by default on Windows.
-
-	To enable it do the following:
-
-	- Run a command prompt in administrator mode
-	- execute `set-executionpolicy remotesigned`
+    > **Note**: Powershell scripting is disabled by default on Windows.
+    
+    > To enable it, open a **command prompt** in administrator mode and run the following command:
+    
+    > `set-executionpolicy remotesigned`
 
 4. Shutdown the VM and create the Vagrant base box using the following command:
 

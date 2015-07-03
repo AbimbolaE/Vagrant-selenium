@@ -12,9 +12,20 @@ if ! File.exists?('./resources/selenium-server-standalone-2.46.0.jar')
 end
 
 
+if ! File.exists?('./resources/IEDriverServer.exe')
+  puts
+  puts 'Internet Explorer driver is missing! Please run:'
+  puts
+  puts 'wget --directory-prefix ./resources/ http://selenium-release.storage.googleapis.com/2.46/IEDriverServer_Win32_2.46.0.zip \\'
+  puts 'unzip resources/IEDriverServer_Win32_2.46.0.zip -d resources/'
+  puts
+  exit 1
+end
+
+
 if ! File.exists?('./resources/jre-8u45-windows-i586.exe')
   puts
-  puts 'Selenium standalone jar is missing! Please run:'
+  puts 'Java 8 JRE is missing! Please run:'
   puts
   puts 'wget --directory-prefix ./resources/ \\'
   puts '--no-cookies --no-check-certificate \\'
@@ -24,18 +35,6 @@ if ! File.exists?('./resources/jre-8u45-windows-i586.exe')
   exit 1
 end
 
-
-# if ! File.exists?('./resources/node.json')
-#   puts
-#   puts 'The configuration file (node.json) for the selenium node is missing.'
-#   puts 'Please add a valid json configuration file in the resources directory'
-#   puts 'called "node.json"'
-#   puts
-#   puts 'See: https://code.google.com/p/selenium/wiki/Grid2 for info...'
-#   puts 'And: https://code.google.com/p/selenium/source/browse/java/server/src/org/openqa/grid/common/defaults/DefaultNode.json for an example json configuration file...'
-#   puts
-#   exit 1
-# end
 
 HOST_OS_IP="192.168.27.1"         # This is from the ip of the private network which vagrant creates
 WIN7_IE8_OS_IP="192.168.27.10"
@@ -47,16 +46,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "ie8" do |ie8|
 
     ie8.vm.box = "win7-ie8"
-    ie8.vm.guest = :windows
-    
-    ie8.vm.communicator = "winrm"
-
-    ie8.winrm.username = "IEUser"
-    ie8.winrm.password = "Passw0rd!"
 
     ie8.vm.network "private_network", ip: WIN7_IE8_OS_IP
 
-    ie8.windows.set_work_network = true
     
     ie8.vm.provider "virtualbox" do |vb|
       vb.gui = true
@@ -65,14 +57,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.memory = 4096
     end
 
-    ie8.vm.provision :shell, path: "scripts/install_java.cmd"
-    ie8.vm.provision :shell, path: "scripts/setup_selenium.cmd"
-    ie8.vm.provision :shell do |nodeRunner|
+    ie8.vm.provision "shell", run: "always" do |nodeRunner|
       nodeRunner.path = "scripts/nodeRunner.cmd"
       nodeRunner.args = [WIN7_IE8_OS_IP, HOST_OS_IP]
     end
 
   end
+
+  config.vm.guest = :windows
+  config.vm.communicator = "winrm"
+
+  config.vm.provision :shell, path: "scripts/install_java.cmd"
+  
+  config.winrm.username = "IEUser"
+  config.winrm.password = "Passw0rd!"
+
+  config.windows.set_work_network = true
 
 end
 

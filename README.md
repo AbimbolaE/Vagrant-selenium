@@ -48,12 +48,22 @@ This guide was made following instructions on the [Vagrant website](https://docs
 
 	`vagrant box add [name of the box] /path/to/the/new.box`
 
+	See: http://docs.vagrantup.com/v2/boxes/base.html for more info..
+
+	*Search for*: "**testing the box**"
+
 6. Install the Vagrant vb-guest plugin using the following command:
 
 	`vagrant plugin install vagrant-vbguest`
 
+	See: https://github.com/dotless-de/vagrant-vbguest for more info..
+
 7. Create a directory for the vagrant box, and run the following from that directory
 
-	`vagrant init [name of box] e.g.`
+	`vagrant init [name of box]`
+
+	See: http://docs.vagrantup.com/v2/boxes/base.html for more info..
+
+	*Search for*: "**testing the box**"
 
 8. Run `vagrant up` to test the box, have fun!

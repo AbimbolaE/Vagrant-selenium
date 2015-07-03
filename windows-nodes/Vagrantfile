@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
 if ! File.exists?('./resources/selenium-server-standalone-2.46.0.jar')
   puts
   puts 'Selenium standalone jar is missing! Please run:'
@@ -10,33 +11,66 @@ if ! File.exists?('./resources/selenium-server-standalone-2.46.0.jar')
   exit 1
 end
 
+
+if ! File.exists?('./resources/jre-8u45-windows-i586.exe')
+  puts
+  puts 'Selenium standalone jar is missing! Please run:'
+  puts
+  puts 'wget --directory-prefix ./resources/ \\'
+  puts '--no-cookies --no-check-certificate \\'
+  puts '--header "Cookie: oraclelicense=accept-securebackup-cookie" \\'
+  puts '"http://download.oracle.com/otn-pub/java/jdk/8u45-b15/jre-8u45-windows-i586.exe"'
+  puts
+  exit 1
+end
+
+
+# if ! File.exists?('./resources/node.json')
+#   puts
+#   puts 'The configuration file (node.json) for the selenium node is missing.'
+#   puts 'Please add a valid json configuration file in the resources directory'
+#   puts 'called "node.json"'
+#   puts
+#   puts 'See: https://code.google.com/p/selenium/wiki/Grid2 for info...'
+#   puts 'And: https://code.google.com/p/selenium/source/browse/java/server/src/org/openqa/grid/common/defaults/DefaultNode.json for an example json configuration file...'
+#   puts
+#   exit 1
+# end
+
+HOST_OS_IP="192.168.27.1"         # This is from the ip of the private network which vagrant creates
+WIN7_IE8_OS_IP="192.168.27.10"
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
-  config.vm.define "win7" do |win7|
+  config.vm.define "ie8" do |ie8|
 
-    win7.vm.box = "win7-ie8"
-    win7.vm.guest = :windows
+    ie8.vm.box = "win7-ie8"
+    ie8.vm.guest = :windows
     
-    win7.vm.communicator = "winrm"
+    ie8.vm.communicator = "winrm"
 
-    win7.winrm.username = "IEUser"
-    win7.winrm.password = "Passw0rd!"
+    ie8.winrm.username = "IEUser"
+    ie8.winrm.password = "Passw0rd!"
 
-    win7.vm.network "public_network"
+    ie8.vm.network "private_network", ip: WIN7_IE8_OS_IP
 
-    win7.windows.set_work_network = true
+    ie8.windows.set_work_network = true
     
-    win7.vm.provider "virtualbox" do |vb|
+    ie8.vm.provider "virtualbox" do |vb|
       vb.gui = true
       vb.name = "ie8-selenium-node"
       vb.cpus = 2
       vb.memory = 4096
     end
 
-    win7.vm.provision :shell, path: "scripts/say-hi.cmd"
+    ie8.vm.provision :shell, path: "scripts/install_java.cmd"
+    ie8.vm.provision :shell, path: "scripts/setup_selenium.cmd"
+    ie8.vm.provision :shell do |nodeRunner|
+      nodeRunner.path = "scripts/nodeRunner.cmd"
+      nodeRunner.args = [WIN7_IE8_OS_IP, HOST_OS_IP]
+    end
 
   end
 
